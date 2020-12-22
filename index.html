@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代理模式</title>
+</head>
+<body>
+    <script>
+    // 女主角 wjx Object
+    // 由两部分组成 属性+方法
+    const wjx ={
+        name:'王嘉新',
+        hometown:'景德镇',
+        age: 20,
+        isSingle: true,
+        sendFlower(sender){
+            sender.receiveFlower(this);
+        }
+    }
+
+    const xm ={
+        name: '小美',
+        xq:50,
+        receiveFlower(target){
+            console.log(this.name+'收到了'+target.name+'花');
+            if(this.xq <80)
+            {
+                console.log('不约');
+            }else
+            {
+                console.log('万达');
+            }
+        }
+    }
+    const xh ={
+        name:'小红',
+        hometown:'景德镇',
+        //代理模式
+        //接口
+        receiveFlower(target){
+            if(target.name =='王嘉新')
+            {
+                setTimeout(() => {
+                    xm.xq = 90;
+                    xm.receiveFlower(target);
+                
+   
+                }, 2000)
+                                     
+            }
+
+        }
+
+    }
+    </script>
+</body>
+</html>
