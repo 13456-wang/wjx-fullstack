@@ -1,0 +1,39 @@
+.container {
+    border: 1px solid black;
+    padding: 0 120px 0 100px;/*给左右padding，数值为对应左右宽度*/
+  }
+  /* 清除浮动 */
+  /* :after 选择器在被选元素的内容后面插入内容。 */
+  .clearfix:after {
+    content: '';
+    /* content 属性与 :before 及 :after 伪元素配合使用，来插入生成内容。 */
+    display: block;
+    clear: both;
+    /* clear:both意思就是清除浮动， */
+  }
+  
+  .main,.left,.right {
+    float: left;
+  }
+  
+  .main {
+    background: #ccc;
+    width: 100%;
+  }
+  
+  .left {
+    background: red;
+    width: 100px;
+    margin-left: -100%;/* 值为100%，left会在最左边 */
+    position: relative;/* 相对定位，左移自身宽度 */
+    left: -100px;
+  }
+  
+  .right {
+    background: blue;
+    width: 120px;
+    margin-left: -120px;/* 值为120px，即right的宽度right会在最右边 */
+    position: relative;
+    right: -120px;/* 相对定位，右移自身宽度 */
+  }
+  
