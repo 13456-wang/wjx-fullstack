@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  const request = window.indexedDB.open('kft', 2);// 打开数据库open方法的第一个参数是数据库名称，格式为字符串，不可省略；
+  //第二个参数是数据库版本，是一个大于0的正整数
+
+  // 全局
+  let db;//let 声明的变量只在 let 命令所在的代码块内有效.const 声明一个只读的常量，一旦声明，常量的值就不能改变。
+  request.onerror = function(event) { //onerror 事件在加载外部文件（文档或图像）发生错误时触发。
+    console.log('数据库打开报错');
+  }
+  request.onsuccess = function(event) {
+    // 函数局部变量
+    db = request.result; //无任何特定条件触发
+    console.log('数据库打开成功');
+    add();
+  }
+  request.onupgradeneeded = function(event) {
+    // console.log('upgrade')
+    db = event.target.result;//event.target.result 属性包含由被指定事件触发的事件处理程序返回的最后一个值。
+    let objectStore;
+    if (!db.objectStoreNames.contains('person')) { //objectStoreNames属性返回一个对象，
+      objectStore = db.createObjectStore('person', {keyPath: 'id'});//createObjectStore方法用于创建存放数据的“对象仓库”
+      objectStore.createIndex('name', 'name', {unique: false});//keyPath，主键 指定可以被索引的字段，unique字段是否唯一
+      objectStore.createIndex('email', 'email', {unique: false});
+    }
+  }
+  function add() {
+      var request = db.transaction(['person'],['readwrite'])//创建一个事务，并要求具有读写权限
+      // transaction方法用于创建一个数据库事务。向数据库添加数据之前，必须先创建数据库事务。
+      .objectStore('person')//该对象的objectStore方法用于获取指定的对象仓库
+      //objectstore（对象仓库)是indexedDB数据库的基础，在indexedDB中并没有数据库表，而对象仓库就是相当于一个数据库表。
+      .add({id:1,name:'张三',age:24,email:'zhangsan@example.com'});
+      request.onsuccess = function(event){
+          console.log('数据库写入成功');
+      }
+      request.onsuccess = function(event){
+          console.log('数据库写入失败');
+      }
+      function read(){
+          let transaction= db.transaction(['person']);
+          let objectStore = transaction.objectStore('person');
+          var request = objectStore.get(1);
+          request.onsuccess=function(event){
+            //event.result 属性包含由被指定事件触发的事件处理程序返回的最后一个值
+              if(request.result){
+                 const {name,email} = request.request;
+                 console.log(name,email)
+              }
+          }
+      }
+
+  }
+  </script>
+</body>
+</html>

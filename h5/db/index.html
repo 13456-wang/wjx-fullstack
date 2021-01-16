@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<!-- <ul id="friends"></ul> -->
+<body>
+  <div class="container">
+    <table id="friends" class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>用户名</th>
+          <th>家乡</th>
+          <th>性别</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="row">
+        <form name ="friendForm">
+            <div class="form-group">
+              <label for="nameInput">用户名</label>
+              <!-- 带有两个输入字段和相关标记的简单 HTML表单：required 属性规定必需在提交之前填写输入字段。 -->
+              <input type="text" class="form-control" id="nameInput" name="nameInput" placeholder="请输入用户名" required>
+            </div>
+            <div class="form-group">
+              <label for="hometown">家乡</label>
+              <input type="text" class="form-control" id="hometownInput" name="hometownInput" placeholder="请输入家乡" required>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="radio" checked="checked" name="sex" value="男"> 男
+              </label>
+              <lable>
+              <input type="radio" checked="checked" name="sex" value="女">女
+              </lable>
+            </div>
+            <button type="submit" class="btn btn-default">添加</button>
+        </form>
+
+    </div>
+  </div>
+  <script>
+    
+  // const friends = [{
+  //   name: '黄伦',
+  //   hometown: '丰城',
+  //   sex: '男'
+  // }, {
+  //   name: '谢林威',
+  //   hometown: '赣州',
+  //   sex: '男'
+  // }, {
+  //   name: '王嘉新',
+  //   howetown: '景德镇',
+  //   sex: '女'
+  // }, {
+  //   name: '杨康妍',
+  //   howetown: '南昌',
+  //   sex: '女'
+  // }];
+  // window.localStorage.setItem('friends-info', JSON.stringify(friends))
+  //JSON 是存储和交换文本信息的语法 JSON.stringify对象变成字符串
+  
+  window.onload = function() {//因为页面中的代码一般情况下按照，从上到下，从左到右的顺序执行。所以当js代码
+    //需要获取页面中的元素时，如果script标签在元素的前面，需要加window.onload；如果script放在了元素后面，就不需要加 window.onload。
+    const friends = JSON.parse(localStorage.getItem('friends-info'));
+    //JSON.parse() 方法用于将一个 JSON 字符串转换为对象。localStorage用于持久化的本地存储
+    // LocalStorage.getItem(key):获取指定key本地存储的值
+    // localStorage.setItem(key,value)：将value存储到key字段
+    // localStorage.removeItem(key):删除指定key本地存储的值
+    const oUL = document.querySelector('#friends tbody')
+    //Document 对象使我们可以从脚本中对 HTML 页面中的所有元素进行访问。
+    //Document 对象是 Window 对象的一部分，可通过 window.document 属性对其进行访问获取文档中 
+    //tbody中friends 的第一个元素 querySelector() 方法返回文档中匹配指定 CSS 选择器的一个元素
+    
+    function renderFriend(o,i){
+        return`<tr>
+          <th>${i}</th>
+          <td>${o.name}</td>
+          <td>${o.hometown}</td>
+          <td>${o.sex}</td>
+        </tr>`//??
+      }
+
+    document
+        .forms['friendForm']
+        .addEventListener('submit',(event)=>{ //addEventListener() 方法用于向指定元素添加事件句柄。
+            event.preventDefault();//preventDefault() 方法阻止元素发生默认的行为（例如，当点击提交按钮时阻止对表单的提交
+            const name = document.forms['friendForm']["nameInput"].value;
+            const hometown = document.forms['friendForm']["hometownInput"].value;
+            const sex=document.forms['friendForm']['sex'].value;
+            console.log(name,hometown,sex);
+            let o={name,hometown,sex};
+            friends.push(o) //push() 方法可向数组的末尾添加一个或多个元素，并返回新的长度。
+            localStorage.setItem('friends-info',JSON.stringify(friends))
+            //JSON.stringify() 方法用于将 JavaScript 值转换为 JSON 字符串
+            oUL.innerHTML +=renderFriend(o,friends.length+1)
+            //innerHTML在JS是双向功能：获取对象的内容 或 向对象插入内容
+
+        })
+    
+    console.log(typeof friends);
+     
+    let i = 0;
+    for (let friend  of friends) {
+      // es6字符串模板符号
+      i++
+      oUL.innerHTML += renderFriend(friend,i)//innerHTML 属性设置或返回表格行的开始和结束标签之间的 HTML。
+    }
+  }
+  </script>
+</body>
+</html>
