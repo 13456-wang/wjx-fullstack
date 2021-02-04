@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // // 三个ajax的请求 要保证执行的顺序
+        // //1.传统的callback 回调地狱
+        // // 2. promise thenanble
+        // // 3. async awiat
+        // function ajax(url,fn){
+        //     let xhr =new XMLHttpRequest();
+        //     //XMLHttpRequest 对象用于在后台与服务器交换数据。
+        //     xhr.open('GET',url);
+        //     //初始化一个请求。指定GET方式提交
+        //     xhr.onreadystatechange=function(){
+        //     //onreadystatechange当 readyState 属性发生变化时，调用的 EventHandler。
+        //         //readyState返回 一个无符号短整型（unsigned short）数字，代表请求的状态码。
+        //         //status返回一个无符号短整型（unsigned short）数字，代表请求的响应状态。
+        //         if(xhr.readyState===4 && xhr.status===200){
+        //             fn(JSON.parse(xhr.responseText))
+        //             //responseText返回一个 DOMString,DOMString 是一个UTF-16字符串
+        //             //.parse() 方法用于将一个 JSON 字符串转换为对象。
+        //         }
+        //     }
+        //     xhr.send();
+        // }
+        // ajax('http://api.github.com/users/wesbos',function(result){
+        //     //call
+        //     console.log(result);
+        //     ajax('http://api.react.beer/v2/search?q=hops&type=beer',function(result){
+        //     console.log(result,"---------");
+        //         ajax('https://apidiscogs.com/artists/51988',function(result) {
+        //             console.log(result,"---------");
+        //         })            
+        //     })
+        // })
+        //根据代码编写顺序执行
+        //generator function 生成器函数
+        // function* foo(x) {//生成器函数
+        //     console.log('1');
+        //     yield x+1;
+        //     console.log('2');
+        //     yield x+2;
+        //     console.log('3')
+        //     return x+3;
+        //     //yield的返回是一个对象，包括 value 和 done 两部分，value自然是返回值，done是该generator函数是否执行完
+        // }
+        // let steps =foo(1);//执行器
+        // let p =new Promise((resolve,reject)=>{
+        //     setTimeout(() => {
+        //         resolve({a:1,b=2})
+        //     }, 2000);
+        // })
+        function ajax(url){
+            fetch(url)
+            .then(data => data.json())
+            .then(data => dataGen.next(data))
+        }
+        function* steps() {
+            console.log('fetching beers');
+            const beers =yield ajax('http://api.react.beer/v2/search?q=hops&type=beer');
+            //yeild promise
+            console.log(beers,'------')
+            const wes =yield ajax('http://api.github.com/users/wesbos');
+            console.log(wes,'+++++++++')
+            const fatJoe =yield ajax('https://apidiscogs.com/artists/51988');
+            console.log(fatJoe)
+        }
+        const dataGen =steps();//
+        dataGen.next()
+    </script>
+    
+</body>
+</html>
