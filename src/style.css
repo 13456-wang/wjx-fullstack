@@ -1,0 +1,44 @@
+.input{border: 3px solid paleturquoise;}
+/* .show{opacity: 1; transition: all 1.5s ease-in;} */
+/* 设置 div 元素的不透明级别 */
+/* .hide{opacity: 0;transition: all 1.5s ease-in;} */
+/* Transition允许CSS的属性值在一定的时间区间内平滑地过渡/ease-in：(加速) */
+/* .hide{
+    animation: hide-item 2s ease-in forwards;
+}
+@keyframes hide-item{
+    0%{
+        opacity: 1;
+        color: yellow;
+    }
+    50%{
+        opacity: 0.5;
+        color: red;
+    }
+    100%{
+        opacity: 0;
+        color: green;
+    }
+} */
+.boss-text-enter{
+    opacity: 0;
+}
+.boss-text-enter-active{
+    opacity: 1;
+    transition: opacity 2000ms;
+
+}
+.boss-text-enter-done{
+    opacity: 1;
+}
+.boss-text-exit{
+    opacity: 1;
+}
+.boss-text-exit-active{
+    opacity: 0;
+    transition: opacity 2000ms;
+
+}
+.boss-text-exit-done{
+    opacity: 0;
+}
