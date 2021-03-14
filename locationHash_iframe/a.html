@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function startRequest(){
+            var ifr = document.createElement('iframe');
+            //创建一个隐藏的iframe
+            ifr.style.display = 'none';
+            ifr.src = 'http://www.csdnblogs.com/b.html#paramdo'
+            //传递的location.hash
+            document.body.appendChild(ifr)
+        }
+        function checkHash(){
+            try{
+                var data = location.hash ? location.hash.substring(1):'';
+                if(console.log){
+                    console.log('Now the data is' +data);
+                }
+            }catch (e){};
+            Interval(checkHash,5000)
+            window.onload = startRequest;
+        }
+    </script>
+</body>
+</html>

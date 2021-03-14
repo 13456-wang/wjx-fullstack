@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function checkHash(){
+            var data= '';
+            switch(location.hash){
+                case '#paramdo':
+                data = 'somedata';
+                break;
+            case '#paramset':
+             //do something……
+                break;
+            default:
+                break;
+            }
+            data && callBack('#' + data);
+        }
+    function callBack(hash) {
+        // ie、chrome的安全机制无法修改parent.location.hash
+        //所以要利用一个中间的www.csdnblogs.com域下的代理iframe
+        var proxy = document.createElement('iframe');
+        proxy.style.display = 'none';
+        proxy.src = 'http://www.csdnblogs.com/c.html' + hash; 
+        // 注意该文件在"www.csdnblogs.com"域下
+        document.body.appendChild(proxy);
+    }
+window.onload = checkHash;
+    </script>
+</body>
+</html>

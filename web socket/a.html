@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var socket = new WebSocket('ws://www.test.com');
+        //http ->ws https ->wss
+        socket.send('hello Websockt')
+        socket.onmessage = function(event){
+            var data = event.data;
+        }
+        // onmessage 属性是当对象接收到message 事件时被调用的EventHandler (en-US) .
+    </script>
+</body>
+</html>
