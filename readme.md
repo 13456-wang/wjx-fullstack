@@ -1,38 +1,22 @@
-nginx 静态网页 http服务 html
-动态 node
-1. centos node
-    - nginx wegt taobao mirrors  .tar.bz
-    解压tar -xvf  
-    /usr/local/bin/node/bin   node npm npx
-    - 全局命令 linux 配置软连接 
-        ln -s /usr/local/bin/node/bin/node /usr/bin/node
-        使其在usr/bin下
-        rm -rf
-        npm init -y
-        npm i koa --save
-2. Koa code
-    ```
-    const express =require('express');
-    const Koa = require('koa');//引入最好的node开发框架
-    const app =new express();
-    const app = new Koa();
-    //中间件 middlewares 每个中间件都是一个函数
-    app.get('/',(req,res) =>{
-        res.send('hello world');
-    })
-    //这一次http服务流程 请求和响应的过程 
-    //app.use 启用一个中间件
-    app.use(async ctx => { //ctx express ctx =req+res
-            ctx.body = 'Hello World';//res body 响应体
-    })
-    app.listen(3000);
-    ```
-    3000端口 
-    node app.js 命令行一直霸占在那
-    3000 任何人发出请求 ctx伺服
-    后台运行
-    npm i -g pm2
-    pm2 start app.js
+文件上传是开发中的难点 大文件上传及断点断续 
+面试官在考察es6文件对象ajax上传 async await promise 后台文件存储
+流操作 等全面的全栈技能 提升难度到大文件和断点续传   
 
-    linux中
-    运行./node_modules/.bin/pm2 start app.js
+文件上传 8M size 1M 8份
+切片 
+1. 是js 在es6 文件对象file node file stream 有所增强
+    任何文件都是二进制,分割blob类型
+    start ,size , offset 
+    http 请求 n个切片并发上传 速度更快 改善了体验
+    - 前端切片让http并发带来上传大文件的快乐
+    1. file.slice完成切片,blob类型文件切片，js二进制文件类型 
+        blob协议在上传文件到服务器之前就可以提前预览
+
+- 服务器端
+    如何将这些切片合并成一个 显示原来图片
+    stream 流
+    可读流 可写流 
+    chunk 二进制文件
+    promise.all来包装每个chunk文件
+    start end fse.createWriteStream
+    每个文件chunk 写入时 先创建可读流 在pipe给可写流

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type='file' id='file'>
+    <!-- type定义输入字段和 "浏览"按钮，供文件上传。 -->
+    <script>
+        //请求封装
+        // 1. http并发 blob上传 chunk
+        // 2. 当blob promise.all 在发送一个给merge的请求 /merge的请求 /merge
+        function request({
+            url,
+            method='POST',
+            data,
+            headers = {},
+            requestList
+        }){
+            return new Promise(resolve=>{
+                const xhr = new XMLHttpRequest();//js ajax对象
+                xhr.open(method,url);//请求
+                Object.keys(headers).forEach(
+                    key=> xhr.setRequestHeader(key,headers[key]) //请求加头
+                );
+                xhr.send(data)
+                xhr.onload = e =>{
+                    resolve({
+                        data:e.target.response
+                    })
+                }
+
+            })
+        }
+        const mergeRequest = async()=>{
+            await request({
+                url:'http://local:3001/merge',
+                headers:{
+                    "content-type":"application/json"
+                }
+            })
+            alert('上传成功')
+        }
+        document.getElementById('file')
+        .addEventListener('change', async (event)=>{
+            const file = event.target.files[0]//es6文件对象
+            console.log(file);
+            const file_name = file.name.split('.')[0];
+            // console.log(Object.prototype.toString.call(file))
+            //[object File]类型为文件类型
+            // console.log(file.slice(0,102400));
+            let cur = 0 ,size =1024*1024;
+            const fileChunkList = [];//blob数组
+            while(cur <file.size){
+                fileChunkList.push({
+                    file:file.slice(cur,cur+size)
+                })
+                cur+=size
+            }
+            console.log(fileChunkList)
+
+            const requestList = fileChunkList
+            .map(({file},index) => {
+                const formData = new FormData();
+                formData.append("chunk",file);
+                formData.append("filename",`${file_name}-${index}`);
+                return{
+                    formData
+                }
+            })
+            .map(async({formData}) =>request({
+                    url:'http://localhost:3000',//前后端的api
+                    data: formData
+                })
+            )
+            console.log(requestList,'---');
+            // console.log(formData,'-------')
+            await Promise.all(requestList)//并发
+            await mergeRequest()//请求合并
+          
+        })
+    </script>
+</body>
+</html>
