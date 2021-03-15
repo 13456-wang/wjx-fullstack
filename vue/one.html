@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id='app'></div>
+</body>
+<script>
+    Vue.createApp({
+        data(){
+            return{
+                counter:1
+            }
+        },
+        mounted(){
+            console.log('页面加载完成后-自动执行')
+            setInterval(() =>{
+                this.counter +=1
+                //这个this.counter指向就是data中的counter
+                //this.$data.counter +=1效果相同
+            },1000)
+        },
+        template:'<div>{{counter}}</div>'
+    }).mount("#app")
+</script>
+</html>

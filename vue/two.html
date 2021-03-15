@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮-列表</title>
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script>
+    Vue.createApp({
+        data(){
+            return{
+                content:'hello',
+                isShow:false,
+                word:'隐藏字段',
+                list:['羊肉','牛肉'],
+                inputValue:''
+            }
+        },
+        methods:{
+            hi(){
+                alert('hi')
+            },
+            haha(){
+                alert('haha')
+            },
+            show(){
+                this.isShow = !this.isShow
+            },
+            handleAddItem(){
+                this.list.push(this.inputValue)
+                this.inputValue = ''
+            }
+        },
+        template:`<div>
+        <div>{{content}}</div>
+        <Button v-on:click="hi">hi</Button>&nbsp
+        <button v-on:click="haha">haha</button>
+        <div>
+            <div v-if="isShow">{{word}}</div>
+            <button v-on:click='show'>显示/隐藏字段</button>
+        </div>
+        <div>
+            <ul>
+                <input v-model="inputValue" />
+                <button v-on:click="handleAddItem">增加食材</button>
+                <li v-for="(item,index) of list">[{{index}}]{{item}}</li>   
+            </ul> 
+        </div>
+        </div>`
+    }).mount("#app")
+</script>
+</html>
