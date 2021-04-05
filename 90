@@ -1,0 +1,26 @@
+var subsetsWithDup = function(nums) {
+    if(nums.length ==0){
+        return[nums]
+    }
+    if(nums.length ==1){
+        return [[],nums]
+    }
+    nums.sort((a,b)=>a-b);//先排序
+    let result =[[]];
+    let lastLength = 0;
+
+    for(let i =0;i<nums.length;i++){
+        let j =0;
+        if(i>0 && nums[i] == nums[i-1]){
+            j=lastLength;
+        }
+        let n =result.length
+        lastLength = result.length
+        for(;j<n;j++){
+            result.push([...result[j],nums[i]])
+        }
+        
+    }
+ return result;   
+  
+}
