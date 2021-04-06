@@ -70,14 +70,35 @@ class Promise{
 
     // }
 }
-new Promise((resolve, reject) => {
-    // 将花时间比较多的任务封装起来， 以实现异步变同步 
+// new Promise((resolve, reject) => {
+//     // 将花时间比较多的任务封装起来， 以实现异步变同步 
+//     setTimeout(() => {
+//       console.log(0)
+//       resolve(10);
+//     // reject('脑子what了')
+//     // throw new Error('出错了')
+//     }, 1000)
+//   }).then((data)=>{
+//     console.log(data,"++++++");
+//   })
+const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      console.log(0)
-      resolve(10);
-    // reject('脑子what了')
-    // throw new Error('出错了')
-    }, 1000)
-  }).then((data)=>{
-    console.log(data,"++++++");
+      resolve('success')
+    }, 2000); 
   })
+  
+  promise.then(value => {
+    console.log(1)
+    console.log('resolve', value)
+  })
+   
+  promise.then(value => {
+    console.log(2)
+    console.log('resolve', value)
+  })
+  
+  promise.then(value => {
+    console.log(3)
+    console.log('resolve', value)
+  })
+  
